@@ -1,0 +1,33 @@
+import mysql.connector
+import json
+import os
+def connect_database ():
+
+    mydb=mysql.connector.connect(
+        host =os.getenv('DBHOST'),
+        user=os.getenv('DBUSER'),
+        password=os.getenv('DBPASSWORD'),
+        database=os.getenv('DBDATABASE'),
+    )
+    return mydb
+
+def measurments_retriever():
+    mydb = connect_database()
+    r = []
+    with mydb.cursor() as mycursor:
+        mycursor.execute("SELECT temperature, humidity, device_id FROM sensor_data ORDER BY id DESC LIMIT 10;")
+        myresult = mycursor.fetchall()
+        for temperature, humidity, device in myresult:
+            r.append({'temperature': temperature, 'humidity': humidity, 'device': device})
+        r = json.dumps(r)
+        mydb.commit()
+    return r
+
+def measurements_register(params):
+    mydb=connect_database()
+    with mydb.cursor() as mycursor:
+        sql= "INSERT INTO sensor_data (temperature, humidity, device_id) VALUES (%s,%s,%s)"
+        val=(params["temperature"],params["humidity"], params["device"])
+        mycursor.execute(sql,val)
+        mydb.commit()
+        print(mycursor.rowcount,"record inserted.")

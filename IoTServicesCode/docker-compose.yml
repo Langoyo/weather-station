@@ -1,0 +1,82 @@
+version: '3'
+services:
+    message_broker:
+        build: message_broker
+        ports:
+            - '1883:1883'
+        environment: 
+            - IP=10.132.0.2
+            - PORT=1883
+            - KEEPALIVE=60
+        volumes:
+             - ./message_broker/app/mosquitto.conf:/mosquitto/config/mosquitto.conf
+    mariaDB:
+        image: 'mariadb:latest'
+        environment:
+           - MYSQL_ROOT_PASSWORD=)fy=('3u"Um%k{Jr
+    webapp_backend:
+        build: ./webapp_backend
+        ports:
+           - '5001:5001'
+        environment:
+            - MEASUREMENTS_MICROSERVICE_ADDRESS=10.132.0.2
+            - MEASUREMENTS_MICROSERVICE_PORT=5003
+            - DEVICES_MICROSERVICE_ADDRESS=10.132.0.2
+            - DEVICES_MICROSERVICE_PORT=5002
+            - HOST=0.0.0.0
+            - PORT=5001
+    devices_microservice:
+        build: ./microservices/devices_microservice
+        ports:
+           - '5002:5002'
+        links:
+           - "mariaDB:mariaDB"
+        environment:
+            - HOST=0.0.0.0
+            - PORT=5002
+            - DBHOST=mariaDB
+            - DBUSER=iot_user
+            - DBPASSWORD=9R[-RP#64nY7*E*H
+            - DBDATABASE=iot_data
+        depends_on:
+            - mariaDB
+    measurements_microservice:
+        build: ./microservices/measurements_microservice
+        ports:
+            - '5003:5003'
+        links:
+            - "mariaDB:mariaDB"
+        environment:
+            - HOST=0.0.0.0
+            - PORT=5003
+            - DBHOST=mariaDB
+            - DBUSER=iot_user
+            - DBPASSWORD=9R[-RP#64nY7*E*H
+            - DBDATABASE=iot_data
+        depends_on:
+            - mariaDB
+    message_router:
+        build: ./message_router
+        environment:
+            - BROKER_ADDRESS=10.132.0.2
+            - BROKER_PORT=1883
+            - BROKER_KEEP_ALIVE=60
+            - BROKER_USER=perri
+            - DEVICES_IP=10.132.0.2
+            - DEVICES_PORT=5002
+            - MEASUREMENTS_IP=10.132.0.2
+            - MEASUREMENTS_PORT=5003
+            - NAME=perri
+            - PASSWORD=sabor4
+            - KEEP_ALIVE=60
+            - TOPIC_1=temperature
+            - TOPIC_1_LAST_WILL={\"status\":\"Off\"}
+            - TOPIC_2=humidity
+            - TOPIC_2_LAST_WILL={\"status\":\"Off\"}
+            - TOPIC_3=devices
+            - TOPIC_3_LAST_WILL={\"status\":\"Off\"}
+            - QOS=0
+    webapp_frontend:
+        build: ./webapp_frontend
+        ports:
+            - '80:80'

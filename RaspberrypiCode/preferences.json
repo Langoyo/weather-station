@@ -1,0 +1,14 @@
+{
+    "name":"perri",
+    "password":"sabor4",
+    "ip":"34.78.26.39",
+    "port":"1883",
+    "keep_alive":"60",
+    "topic_1":"temperature",
+    "topic_1_last_will":"{\"status\":\"Off\"}",
+    "topic_2":"humidity",
+    "topic_2_last_will":"{\"status\":\"Off\"}",
+    "topic_3":"devices",
+    "topic_3_last_will":"{\"status\":\"Off\"}",
+    "qos":"0"
+}
