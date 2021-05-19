@@ -64,6 +64,8 @@ CREATE TABLE sensor_data (
    temperature float NOT NULL,
 
    device_id varchar(50),
+   
+   timestamp TIMESTAMP,
 
    PRIMARY KEY (id)
 
@@ -78,6 +80,12 @@ CREATE TABLE sensor_data (
    device_id varchar(50) NOT NULL,
 
    UNIQUE (device_id),
+   
+   status varchar(10),
+
+   location varchar(100),
+
+   timestamp TIMESTAMP,
 
    PRIMARY KEY (id)
 

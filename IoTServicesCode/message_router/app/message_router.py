@@ -11,33 +11,29 @@ new_temperature = "0"
 new_humidity = "0"
 new_id = "0"
 current_id = "01"
+current_location="Default"
 TOPIC_1 = os.getenv('TOPIC_1')
 TOPIC_2 = os.getenv('TOPIC_2')
 TOPIC_3 = os.getenv('TOPIC_3')
+TOPIC_4 = os.getenv('TOPIC_4')
 
 
 
 def on_connect(client, userdata, flags, rc):
     if rc==0:
         print('Connected success')
-        print(TOPIC_1,TOPIC_2,TOPIC_3)
+        print(TOPIC_1,TOPIC_2,TOPIC_3,TOPIC_4)
         client.subscribe(TOPIC_1)
         client.subscribe(TOPIC_2)
         client.subscribe(TOPIC_3)
+        client.subscribe(TOPIC_4)
     else:
         print('Connection failed with code',{rc})
 
 def on_message(client, userdata, msg):
-    TOPIC_1 = os.getenv('TOPIC_1')
-    NAME = os.getenv('NAME')
-    KEEP_ALIVE = os.getenv('KEEP_ALIVE')
-    TOPIC_2 = os.getenv('TOPIC_2')
-    TOPIC_3 = os.getenv('TOPIC_3')
-    TOPIC_1_LAST_WILL = os.getenv('TOPIC_1_LAST_WILL')
-    TOPIC_2_LAST_WILL = os.getenv('TOPIC_2_LAST_WILL')
-    TOPIC_3_LAST_WILL = os.getenv('TOPIC_3_LAST_WILL')
+
     print(msg)
-    global current_temperature, current_humidity, my_json, new_temperature, new_humidity, current_id, new_id
+    global current_temperature, current_humidity, my_json, new_temperature, new_humidity, current_id, new_id, new_location, current_location
     print(msg.payload.decode('utf-8', 'ignore'))
     if msg.topic==TOPIC_1 :
         new_temperature=str(msg.payload.decode('utf-8', 'ignore'))
@@ -45,8 +41,12 @@ def on_message(client, userdata, msg):
         if not 'status' not in new_temperature:
             current_temperature = new_temperature['value']
             print(msg.topic," is ",current_temperature)
-            data = {'temperature': current_temperature, 'humidity': current_humidity,'device':current_id}
+            data = {'temperature': current_temperature, 'humidity': current_humidity,'device':current_id, 'timestamp': new_temperature['timestamp']}
             submit_data_to_store(data)
+        else:
+            new_status=new_id['status']
+            off_data={"status":new_status,"device":current_id}
+            submit_error_info(data)
 
     if msg.topic==TOPIC_2:
         new_humidity = str(msg.payload.decode('utf-8', 'ignore'))
@@ -54,8 +54,12 @@ def on_message(client, userdata, msg):
         if 'status' not in new_humidity:
             current_humidity = new_humidity['value']
             print(msg.topic," is ",current_humidity)
-            data = {'temperature': current_temperature, 'humidity': current_humidity, 'device':current_id}
+            data = {'temperature': current_temperature, 'humidity': current_humidity, 'device':current_id, 'timestamp': new_humidity['timestamp']}
             submit_data_to_store(data)
+        else:
+            new_status=new_id['status']
+            off_data={"status":new_status,"device":current_id}
+             submit_error_info(data)
 
     if msg.topic==TOPIC_3:
         new_id = str(msg.payload.decode('utf-8', 'ignore'))
@@ -66,13 +70,26 @@ def on_message(client, userdata, msg):
             print(msg.topic, " is ", current_id)
             data = {"device":current_id}
             submit_device_info_to_store(data)
+        else:
+            new_status=new_id['status']
+            data={"status":new_status,"device":current_id}
+            submit_error_info(data)
 
 
-
-
-    # my_json.append({'temperature': current_temperature, 'humidity': current_humidity})
-    # with open('weather.json', 'w') as json_file:
-    #         json.dump(my_json,json_file)
+    if msg.topic==TOPIC_4:
+        new_location = str(msg.payload.decode('utf-8', 'ignore'))
+        new_location = json.loads(new_location)
+        if 'status' not in new_location:
+            
+           current_location = new_location['value']
+           print(msg.topic, " is ",current_location)
+           data = {"device":current_id,"location":current_location,"timestamp":new_location['timestamp']}
+           submit_location(data)
+        else:
+            new_status=new_id['status']
+            data={"status":new_status,"device":current_id}
+            submit_error_info(data)
+            
 
 
 BROKER_USER = os.getenv('BROKER_USER')

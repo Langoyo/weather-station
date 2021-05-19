@@ -15,7 +15,7 @@ def measurments_retriever():
     mydb = connect_database()
     r = []
     with mydb.cursor() as mycursor:
-        mycursor.execute("SELECT temperature, humidity, device_id FROM sensor_data ORDER BY id DESC LIMIT 10;")
+        mycursor.execute("SELECT temperature, humidity, device_id FROM sensor_data ORDER BY id DESC;")
         myresult = mycursor.fetchall()
         for temperature, humidity, device in myresult:
             r.append({'temperature': temperature, 'humidity': humidity, 'device': device})
@@ -26,8 +26,8 @@ def measurments_retriever():
 def measurements_register(params):
     mydb=connect_database()
     with mydb.cursor() as mycursor:
-        sql= "INSERT INTO sensor_data (temperature, humidity, device_id) VALUES (%s,%s,%s)"
-        val=(params["temperature"],params["humidity"], params["device"])
+        sql= "INSERT INTO sensor_data (temperature, humidity, device_id, timestamp) VALUES (%s,%s,%s,%s)"
+        val=(params["temperature"],params["humidity"], params["device"],params["timestamp"])
         mycursor.execute(sql,val)
         mydb.commit()
         print(mycursor.rowcount,"record inserted.")

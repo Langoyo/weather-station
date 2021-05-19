@@ -1,3 +1,4 @@
+from IoTServicesCode.microservices.devices_microservice.app.devices_manager import devices_deactivator
 from flask import Flask, request
 from flask_cors import CORS
 from devices_manager import *
@@ -14,6 +15,19 @@ def save_deviceinfo():
 @app.route('/devices/retrieve/')
 def retrieve_devices():
     return devices_retriever()
+
+@app.route('/devices/error/', methods = ['POST'])
+def save_deviceinfo():
+    params = request.get_json()
+    devices_deactivator(params)
+    return {'result': 'record inserted'}, 201
+
+@app.route('/devices/location/', methods = ['POST'])
+def save_deviceinfo():
+    params = request.get_json()
+    devices_locator(params)
+    return {'result': 'record inserted'}, 201
+
 
 HOST = os.getenv('HOST')
 PORT = os.getenv('PORT')

@@ -1,6 +1,7 @@
 import paho.mqtt.client as mqtt
 import time
 import json
+import datetime
 
 f = open('preferences.json', )
 preferences = json.load(f)
@@ -15,9 +16,12 @@ def on_connect(client, userdata, flags, rc):
 client = mqtt.Client()
 
 def make_connection():
-    client.will_set(preferences['topic_1'], preferences['topic_1_last_will'])
-    client.will_set(preferences['topic_2'], preferences['topic_2_last_will'])
-    client.will_set(preferences['topic_3'], preferences['topic_3_last_will'])
+    last_will = "{\"status\":\"Inactive\" , \"timestamp\":" +str(datetime.datetime.now().time())+"}"
+
+    client.will_set(preferences['topic_1'], last_will)
+    client.will_set(preferences['topic_2'], last_will)
+    client.will_set(preferences['topic_3'], last_will)
+    client.will_set(preferences['topic_4'], last_will)
     client.username_pw_set(username=preferences['name'], password=preferences['password'])
 
     client.on_connect = on_connect
@@ -36,4 +40,9 @@ def send_humidity(humidity,time_stamp):
 def send_id(id,time_stamp):
     device_payload = '{"value":"' + str(id) + '", "timestamp":"' + str(time_stamp) + '"}'
     client.publish(preferences['topic_3'], payload=device_payload, qos=int(preferences["qos"]), retain=False)
+    time.sleep(1)
+
+def send_location(location,time_stamp):
+    device_payload = '{"value":"' + str(location) + '", "timestamp":"' + str(time_stamp) + '"}'
+    client.publish(preferences['topic_4'], payload=device_payload, qos=int(preferences["qos"]), retain=False)
     time.sleep(1)

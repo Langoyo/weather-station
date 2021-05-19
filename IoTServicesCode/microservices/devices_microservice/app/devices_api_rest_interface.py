@@ -11,6 +11,8 @@ def save_deviceinfo():
     devices_register(params)
     return {'result': 'record inserted'}, 201
 
+
+
 @app.route('/devices/retrieve/')
 def retrieve_devices():
     return devices_retriever()
@@ -18,3 +20,4 @@ def retrieve_devices():
 HOST = os.getenv('HOST')
 PORT = os.getenv('PORT')
 app.run(host = HOST, port = PORT)
+

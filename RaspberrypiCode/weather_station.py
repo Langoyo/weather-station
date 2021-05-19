@@ -28,7 +28,8 @@ def temperatureSensor():
             print("Temp={0:0.1f}C".format(newtemperature))
         else:
             print("Sensor failure. Check wiring")
-        time.sleep(3)
+        # Publishing new temperature every 60 seconds
+        time.sleep(60)
 def humiditySensor():
     newhumidity=0
     while True:
@@ -44,22 +45,31 @@ def humiditySensor():
             print("Humidity={}%".format(newhumidity))
         else:
             print("Sensor failure. Check wiring")
-        time.sleep(3)
+            # Publishing new humidity every 60 seconds
+        time.sleep(60)
 def weatherSensor():
     now = datetime.datetime.now().time()
     pub.make_connection()
     id= ':'.join(['{:02x}'.format((uuid.getnode()>>ele) & 0xff)
                     for ele in range(0,8*6,8)][::-1])
     print(id)
-    pub.send_id(id+" - Raspberry: ",now)
+    pub.send_id("Device:" + id,now)
 
+def locationSensor():
+    while True:
+        now = datetime.datetime.now().time()
+        location = "Change for data in GPS weather_station"
+        pub.send_location(location,now)
+        time.sleep (3600)
 
 
 if __name__ == '__main__':
 
     weatherSensor()
     signal.signal(signal.SIGINT, signal_handler)
+    location_thread=threading.Thread(tardget=locationSensor)
     humidity_thread = threading.Thread(target=humiditySensor)
     temperature_thread = threading.Thread(target=temperatureSensor)
+    location_thread.start()
     temperature_thread.start()
     humidity_thread.start()

@@ -70,11 +70,13 @@ services:
             - PASSWORD=sabor4
             - KEEP_ALIVE=60
             - TOPIC_1=temperature
-            - TOPIC_1_LAST_WILL={\"status\":\"Off\"}
+            - TOPIC_1_LAST_WILL={\"status\":\"Inactive\"}
             - TOPIC_2=humidity
-            - TOPIC_2_LAST_WILL={\"status\":\"Off\"}
+            - TOPIC_2_LAST_WILL={\"status\":\"Inactive\"}
             - TOPIC_3=devices
-            - TOPIC_3_LAST_WILL={\"status\":\"Off\"}
+            - TOPIC_3_LAST_WILL={\"status\":\"Inactive\"}
+            - TOPIC_4=location
+            - TOPIC_4_LAST_WILL={\"status\":\"Inactive\"}
             - QOS=0
     webapp_frontend:
         build: ./webapp_frontend
