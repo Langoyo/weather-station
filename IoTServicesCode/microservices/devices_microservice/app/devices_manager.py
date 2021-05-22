@@ -81,10 +81,8 @@ def check_existing_device(id):
     mydb=connect_database()
     print(id)
     with mydb.cursor() as mycursor:
-        sql= "SELECT device_id FROM devices WHERE device_id = %s"
-
-        val=(id,)
-        mycursor.execute(sql,val)
+        sql= "SELECT device_id FROM devices"
+        mycursor.execute(sql)
         myresult = mycursor.fetchall()
         if id in myresult:
             return True
