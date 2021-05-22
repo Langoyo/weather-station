@@ -57,7 +57,7 @@ def devices_register(params):
     mydb=connect_database()
     with mydb.cursor() as mycursor:
 
-        if True or check_existing_device(params["device"]):
+        if False and check_existing_device(params["device"]):
             sql= "UPDATE devices SET status=%s, timestamp=%s WHERE device_id = %s"
             val=('Active',params["timestamp"] ,params["device"])
             try:
