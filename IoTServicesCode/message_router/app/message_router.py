@@ -38,7 +38,7 @@ def on_message(client, userdata, msg):
     if msg.topic==TOPIC_1 :
         new_temperature=str(msg.payload.decode('utf-8', 'ignore'))
         new_temperature = json.loads(new_temperature)
-        if not 'status' not in new_temperature:
+        if 'status' not in new_temperature:
             current_temperature = new_temperature['value']
             print(msg.topic," is ",current_temperature)
             data = {'temperature': current_temperature, 'humidity': current_humidity,'device':current_id, 'timestamp': new_temperature['timestamp']}
