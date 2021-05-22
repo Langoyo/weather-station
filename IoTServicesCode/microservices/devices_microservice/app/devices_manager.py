@@ -86,7 +86,7 @@ def check_existing_device(id):
         val=(id,)
         mycursor.execute(sql,val)
         myresult = mycursor.fetchall()
-        if len(myresult) > 0:
+        if id in myresult:
             return True
         else:
             return False
