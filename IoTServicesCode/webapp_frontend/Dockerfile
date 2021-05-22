@@ -1,3 +1,11 @@
-FROM httpd:2.4
+FROM node:12.7-alpine AS build
+WORKDIR ./app/web
+COPY package.json package-lock.json ./
+RUN npm install &&
+    / ng build --prod
 
-COPY ./app/ /usr/local/apache2/htdocs/
+
+
+FROM httpd:2.4
+RUN rm /usr/local/apache2/htdocs/*
+COPY ./app/web/dist/web/* /usr/local/apache2/htdocs/
