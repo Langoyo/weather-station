@@ -19,13 +19,13 @@ def retrieve_devices():
 def remove_device():
     params = request.get_json()
     devices_deactivator(params)
-    return {'result': 'record inserted'}, 201
+    return {'result': 'record removed'}, 201
 
 @app.route('/devices/location/', methods = ['POST'])
 def locate_device():
     params = request.get_json()
     devices_locator(params)
-    return {'result': 'record inserted'}, 201
+    return {'result': 'record updated'}, 201
 
 
 HOST = os.getenv('HOST')

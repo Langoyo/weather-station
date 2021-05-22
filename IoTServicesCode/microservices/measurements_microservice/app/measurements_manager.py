@@ -15,10 +15,10 @@ def measurments_retriever():
     mydb = connect_database()
     r = []
     with mydb.cursor() as mycursor:
-        mycursor.execute("SELECT temperature, humidity, device_id FROM sensor_data ORDER BY id DESC;")
+        mycursor.execute("SELECT temperature, humidity, device_id, timestamp FROM sensor_data ORDER BY id DESC;")
         myresult = mycursor.fetchall()
-        for temperature, humidity, device in myresult:
-            r.append({'temperature': temperature, 'humidity': humidity, 'device': device})
+        for temperature, humidity, device, timestamp in myresult:
+            r.append({'temperature': temperature, 'humidity': humidity, 'device': device, "timestamp": timestamp})
         r = json.dumps(r)
         mydb.commit()
     return r
