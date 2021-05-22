@@ -2,8 +2,7 @@ FROM node:latest
 WORKDIR ./app/web
 RUN npm install
 COPY . .
-WORKDIR ./app/web
-RUN npm run-script build --prod
+RUN ./app/web/node_modules/.bin/ng build --prod
 
 
 FROM httpd:2.4
