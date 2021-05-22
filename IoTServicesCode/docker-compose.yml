@@ -5,7 +5,7 @@ services:
         ports:
             - '1883:1883'
         environment: 
-            - IP=10.132.0.2
+            - IP=10.156.0.7
             - PORT=1883
             - KEEPALIVE=60
         volumes:
@@ -19,9 +19,9 @@ services:
         ports:
            - '5001:5001'
         environment:
-            - MEASUREMENTS_MICROSERVICE_ADDRESS=10.132.0.2
+            - MEASUREMENTS_MICROSERVICE_ADDRESS=10.156.0.7
             - MEASUREMENTS_MICROSERVICE_PORT=5003
-            - DEVICES_MICROSERVICE_ADDRESS=10.132.0.2
+            - DEVICES_MICROSERVICE_ADDRESS=10.156.0.7
             - DEVICES_MICROSERVICE_PORT=5002
             - HOST=0.0.0.0
             - PORT=5001
@@ -58,13 +58,13 @@ services:
     message_router:
         build: ./message_router
         environment:
-            - BROKER_ADDRESS=10.132.0.2
+            - BROKER_ADDRESS=10.156.0.7
             - BROKER_PORT=1883
             - BROKER_KEEP_ALIVE=60
             - BROKER_USER=perri
-            - DEVICES_IP=10.132.0.2
+            - DEVICES_IP=10.156.0.7
             - DEVICES_PORT=5002
-            - MEASUREMENTS_IP=10.132.0.2
+            - MEASUREMENTS_IP=10.156.0.7
             - MEASUREMENTS_PORT=5003
             - NAME=perri
             - PASSWORD=sabor4

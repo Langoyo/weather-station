@@ -67,7 +67,7 @@ if __name__ == '__main__':
 
     weatherSensor()
     signal.signal(signal.SIGINT, signal_handler)
-    location_thread=threading.Thread(tardget=locationSensor)
+    location_thread=threading.Thread(target=locationSensor)
     humidity_thread = threading.Thread(target=humiditySensor)
     temperature_thread = threading.Thread(target=temperatureSensor)
     location_thread.start()
