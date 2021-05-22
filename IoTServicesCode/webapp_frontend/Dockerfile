@@ -3,8 +3,7 @@ WORKDIR ./app/web
 RUN npm install -g npm@7.14.0
 COPY . .
 WORKDIR ./app/web
-RUN alias ng="/usr/local/lib/node_modules/node/lib/node_modules/@angular/cli/bin/ng"
-RUN npm run build --prod
+RUN npm run-script build --prod
 
 
 FROM httpd:2.4
