@@ -83,7 +83,7 @@ def check_existing_device(id):
     with mydb.cursor() as mycursor:
         sql= "SELECT device_id FROM devices WHERE device_id is %s"
         print(id)
-        val=id
+        val=(id,)
         mycursor.execute(sql,val)
         myresult = mycursor.fetchall()
         if len(myresult) > 0:
