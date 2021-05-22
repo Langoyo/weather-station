@@ -16,13 +16,13 @@ def retrieve_devices():
     return devices_retriever()
 
 @app.route('/devices/error/', methods = ['POST'])
-def save_deviceinfo():
+def remove_device():
     params = request.get_json()
     devices_deactivator(params)
     return {'result': 'record inserted'}, 201
 
 @app.route('/devices/location/', methods = ['POST'])
-def save_deviceinfo():
+def locate_device():
     params = request.get_json()
     devices_locator(params)
     return {'result': 'record inserted'}, 201
