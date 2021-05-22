@@ -22,7 +22,7 @@ def devices_retriever():
         mycursor.execute("SELECT device_id,status,location,timestamp FROM devices ORDER BY id DESC")
         myresult = mycursor.fetchall()
         for (device_id,status,location,timestamp) in myresult:
-            r.append({"device_id": device_id,"status":status,"location":location,"timestamp":timestamp})
+            r.append({"device_id": device_id , "status" : status , "location" : str(location) , "timestamp" : str(timestamp) })
         mydb.commit()
         r = json.dumps(r)
     return r
