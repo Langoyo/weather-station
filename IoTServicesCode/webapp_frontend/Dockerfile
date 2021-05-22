@@ -1,7 +1,9 @@
 FROM httpd:2.4
 COPY /app /etc/usr/src/app
 WORKDIR /etc/usr/src/app
-RUN cp ./web/dist/web/* /usr/local/apache2/htdocs/ -r
+RUN rm /usr/local/apache2/htdocs/*
+RUN cp ./* /usr/local/apache2/htdocs/ -r
+#RUN cp ./web/dist/web/* /usr/local/apache2/htdocs/ -r
 #RUN cp ./* /usr/local/apache2/htdocs/ -r
 
 #FROM node:latest as node
