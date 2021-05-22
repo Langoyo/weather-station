@@ -1,9 +1,9 @@
 FROM node:latest
 WORKDIR ./app/web
-RUN npm install
+RUN  sudo npm install
 COPY . .
 RUN ls ./app/web
-RUN ./app/web/node_modules/.bin/ng build --prod
+RUN ng build --prod
 
 
 FROM httpd:2.4
