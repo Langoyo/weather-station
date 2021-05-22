@@ -4,4 +4,4 @@ WORKDIR /etc/usr/src/app
 
 RUN ls ./web/dist/web/
 RUN ls /usr/local/apache2/htdocs/
-COPY /etc/usr/src/app/web/dist/web/* /usr/local/apache2/htdocs/
+COPY /etc/usr/src/app/web/dist/web/ /usr/local/apache2/htdocs/
