@@ -2,6 +2,7 @@ FROM node:latest
 WORKDIR ./app/web
 RUN npm install
 COPY . .
+RUN ls
 RUN ./app/web/node_modules/.bin/ng build --prod
 
 
