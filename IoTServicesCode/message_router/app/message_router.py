@@ -70,7 +70,8 @@ def on_message(client, userdata, msg):
 
             current_id = new_id['value']
             print(msg.topic, " is ", current_id)
-            data = {"device":current_id,"status":"Active","timestamp":new_id['timestamp']}
+            data = { "device" : current_id , "status" : "Active" , "timestamp" : new_id['timestamp']}
+            print(data)
             submit_device_info_to_store(data)
         else:
             new_status=new_id['status']
