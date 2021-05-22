@@ -12,6 +12,7 @@ new_humidity = "0"
 new_id = "0"
 current_id = "01"
 current_location="Default"
+new_location = "Default"
 TOPIC_1 = os.getenv('TOPIC_1')
 TOPIC_2 = os.getenv('TOPIC_2')
 TOPIC_3 = os.getenv('TOPIC_3')
