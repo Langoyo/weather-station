@@ -63,7 +63,7 @@ def devices_register(params):
             try:
                 mycursor.execute(sql,val)
                 mydb.commit()
-                print(mycursor.rowcount,"record inserted.")
+                print(mycursor.rowcount,"record updated.")
             except:
                 print("Error registering the device")
         else:    
