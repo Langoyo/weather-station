@@ -18,7 +18,7 @@ def temperatureSensor():
     while True:
 
         today = date.today()
-        now = datetime.datetime.now().time()
+        now = datetime.datetime.today().replace(microsecond=0)
         dht11.measure()
         temperature = dht11.temperature
         if temperature is not None:
@@ -35,7 +35,7 @@ def humiditySensor():
     while True:
 
         today = date.today()
-        now = datetime.datetime.now().time()
+        now = datetime.datetime.today().replace(microsecond=0)
         dht11.measure()
         humidity = dht11.humidity
         if humidity is not None:
@@ -48,7 +48,7 @@ def humiditySensor():
             # Publishing new humidity every 60 seconds
         time.sleep(60)
 def weatherSensor():
-    now = datetime.datetime.now().time()
+    now = datetime.datetime.today().replace(microsecond=0)
     pub.make_connection()
     id= ':'.join(['{:02x}'.format((uuid.getnode()>>ele) & 0xff)
                     for ele in range(0,8*6,8)][::-1])

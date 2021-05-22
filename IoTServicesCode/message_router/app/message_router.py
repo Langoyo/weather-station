@@ -44,9 +44,8 @@ def on_message(client, userdata, msg):
             data = {'temperature': current_temperature, 'humidity': current_humidity,'device':current_id, 'timestamp': new_temperature['timestamp']}
             submit_data_to_store(data)
         else:
-            new_status=new_id['status']
-            off_data={"status":new_status,"device":current_id}
-            submit_error_info(data)
+            off_data={"status":new_temperature['status'],"device":current_id,'timestamp': new_temperature['timestamp']}
+            submit_error_info(off_data)
 
     if msg.topic==TOPIC_2:
         new_humidity = str(msg.payload.decode('utf-8', 'ignore'))
@@ -57,9 +56,8 @@ def on_message(client, userdata, msg):
             data = {'temperature': current_temperature, 'humidity': current_humidity, 'device':current_id, 'timestamp': new_humidity['timestamp']}
             submit_data_to_store(data)
         else:
-            new_status=new_id['status']
-            off_data={"status":new_status,"device":current_id}
-             submit_error_info(data)
+            off_data={"status":new_humidity['status'],"device":current_id,"timestamp":new_humidity['timestamp']}
+            submit_error_info(off_data)
 
     if msg.topic==TOPIC_3:
         new_id = str(msg.payload.decode('utf-8', 'ignore'))
@@ -68,11 +66,11 @@ def on_message(client, userdata, msg):
 
             current_id = new_id['value']
             print(msg.topic, " is ", current_id)
-            data = {"device":current_id}
+            data = {"device":current_id,"status":"Active","timestamp":new_id['timestamp']}
             submit_device_info_to_store(data)
         else:
             new_status=new_id['status']
-            data={"status":new_status,"device":current_id}
+            data={"status":new_status,"device":current_id,"timestamp":new_id['timestamp']}
             submit_error_info(data)
 
 
@@ -87,7 +85,7 @@ def on_message(client, userdata, msg):
            submit_location(data)
         else:
             new_status=new_id['status']
-            data={"status":new_status,"device":current_id}
+            data={"status":new_status,"device":current_id,"timestamp":new_location['timestamp']}
             submit_error_info(data)
             
 

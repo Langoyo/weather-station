@@ -16,7 +16,7 @@ def on_connect(client, userdata, flags, rc):
 client = mqtt.Client()
 
 def make_connection():
-    last_will = "{\"status\":\"Inactive\" , \"timestamp\":" +str(datetime.datetime.now().time())+"}"
+    last_will = "{\"status\":\"Inactive\" , \"timestamp\":" +str(datetime.datetime.today().replace(microsecond=0))+"}"
 
     client.will_set(preferences['topic_1'], last_will)
     client.will_set(preferences['topic_2'], last_will)

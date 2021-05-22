@@ -19,10 +19,10 @@ def devices_retriever():
     mydb = connect_database()
     r = []
     with mydb.cursor() as mycursor:
-        mycursor.execute("SELECT device_id FROM devices ORDER BY id DESC")
+        mycursor.execute("SELECT device_id,status,location,timestamp FROM devices ORDER BY id DESC")
         myresult = mycursor.fetchall()
-        for device_id in myresult:
-            r.append({"device_id": device_id})
+        for (device_id,status,location,timestamp) in myresult:
+            r.append({"device_id": device_id,"status":status,"location":location,"timestamp":timestamp})
         mydb.commit()
         r = json.dumps(r)
     return r
@@ -32,7 +32,6 @@ def devices_deactivator(params):
     with mydb.cursor() as mycursor:
         sql= "UPDATE devices SET status=%s, timestamp=%s WHERE device_id=%s"
         val=(params["status"], params["timestamp"], params["device"])
-        device_id=(val,)
         try:
             mycursor.execute(sql,val)
             mydb.commit()
@@ -59,8 +58,8 @@ def devices_register(params):
     with mydb.cursor() as mycursor:
 
         if check_existing_device(params["device"]):
-            sql= "UPDATE devices SET status=%s WHERE device_id = %s"
-            val=('Active',params["device"])
+            sql= "UPDATE devices SET status=%s, timestamp=%s WHERE device_id = %s"
+            val=('Active',params["timestamp"] ,params["device"])
             try:
                 mycursor.execute(sql,val)
                 mydb.commit()
