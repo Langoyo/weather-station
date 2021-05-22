@@ -57,7 +57,7 @@ def devices_register(params):
     mydb=connect_database()
     with mydb.cursor() as mycursor:
 
-        if False and check_existing_device(params["device"]):
+        if check_existing_device(params["device"]):
             sql= "UPDATE devices SET status=%s, timestamp=%s WHERE device_id = %s"
             val=('Active',params["timestamp"] ,params["device"])
             try:
@@ -71,7 +71,7 @@ def devices_register(params):
             val=(params["device"],'Active')
             device_id=(val,)
             try:
-                mycursor.execute(sql,device_id)
+                mycursor.execute(sql,val)
                 mydb.commit()
                 print(mycursor.rowcount,"record inserted.")
             except:
