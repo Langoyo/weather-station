@@ -1,4 +1,3 @@
-from IoTServicesCode.microservices.devices_microservice.app.devices_manager import devices_deactivator
 from flask import Flask, request
 from flask_cors import CORS
 from devices_manager import *
