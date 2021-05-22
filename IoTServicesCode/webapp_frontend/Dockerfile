@@ -6,7 +6,7 @@
 
 FROM node:latest as node
 COPY /app /etc/usr/src/app
-WORKDIR /etc/usr/src/app
+WORKDIR /etc/usr/src/app/web
 RUN npm install
 RUN npm run build --prod
 
