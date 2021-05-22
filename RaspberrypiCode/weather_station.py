@@ -57,7 +57,7 @@ def weatherSensor():
 
 def locationSensor():
     while True:
-        now = datetime.datetime.now().time()
+        now = datetime.datetime.today().replace(microsecond=0)
         location = "Change for data in GPS weather_station"
         pub.send_location(location,now)
         time.sleep (3600)
