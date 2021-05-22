@@ -2,6 +2,7 @@ FROM node:12.7-alpine AS build
 WORKDIR ./app/web
 RUN npm install
 FROM nginx:1.17.1-alpine
+RUN npm install -g @angular
 RUN npm run build --prod
 
 
