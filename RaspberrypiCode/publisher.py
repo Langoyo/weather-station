@@ -16,7 +16,12 @@ def on_connect(client, userdata, flags, rc):
 client = mqtt.Client()
 
 def make_connection():
-    last_will = "{\"status\":\"Inactive\" , \"timestamp\":" +str(datetime.datetime.today().replace(microsecond=0))+"}"
+    date = datetime.datetime.today().replace(microsecond=0)
+    last_will = {
+        "status": "Inactive" ,
+        "timestamp": str(date)
+     }
+    last_will = json.dumps(last_will)
 
     client.will_set(preferences['topic_1'], last_will)
     client.will_set(preferences['topic_2'], last_will)
