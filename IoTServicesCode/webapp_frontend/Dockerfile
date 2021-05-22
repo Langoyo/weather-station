@@ -8,7 +8,7 @@ FROM node:latest as node
 COPY /app /etc/usr/src/app
 WORKDIR /etc/usr/src/app
 RUN npm install
-RUN ng build --prod
+RUN npm run build --prod
 
 FROM nginx:alpine
 COPY --from=node /app/dist/web /usr/share/nginx/html
