@@ -2,6 +2,7 @@ FROM node:latest
 WORKDIR ./app/web
 RUN npm install -g npm@7.14.0
 COPY . .
+WORKDIR ./app/web
 RUN npm run build --prod
 
 
