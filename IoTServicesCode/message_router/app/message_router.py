@@ -38,6 +38,7 @@ def on_message(client, userdata, msg):
     print(msg.payload.decode('utf-8', 'ignore'))
     if msg.topic==TOPIC_1 :
         new_temperature=str(msg.payload.decode('utf-8', 'ignore'))
+        print(new_temperature)
         new_temperature = json.loads(new_temperature)
         if 'status' not in new_temperature:
             current_temperature = new_temperature['value']
@@ -50,6 +51,7 @@ def on_message(client, userdata, msg):
 
     if msg.topic==TOPIC_2:
         new_humidity = str(msg.payload.decode('utf-8', 'ignore'))
+        print(new_humidity)
         new_humidity = json.loads(new_humidity)
         if 'status' not in new_humidity:
             current_humidity = new_humidity['value']
@@ -62,6 +64,7 @@ def on_message(client, userdata, msg):
 
     if msg.topic==TOPIC_3:
         new_id = str(msg.payload.decode('utf-8', 'ignore'))
+        print(new_id)
         new_id = json.loads(new_id)
         if 'status' not in new_id:
 
@@ -77,6 +80,7 @@ def on_message(client, userdata, msg):
 
     if msg.topic==TOPIC_4:
         new_location = str(msg.payload.decode('utf-8', 'ignore'))
+        print(new_location)
         new_location = json.loads(new_location)
         if 'status' not in new_location:
             
