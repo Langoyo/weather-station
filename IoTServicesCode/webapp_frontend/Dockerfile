@@ -3,7 +3,7 @@ WORKDIR ./app/web
 RUN npm install -g npm@7.14.0
 COPY . .
 WORKDIR ./app/web
-RUN node_modules/.bin/ng build --prod
+RUN node_modules/bin/ng build --prod
 
 
 FROM httpd:2.4
