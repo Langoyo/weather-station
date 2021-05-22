@@ -80,9 +80,10 @@ def devices_register(params):
 
 def check_existing_device(id):
     mydb=connect_database()
+    print(id)
     with mydb.cursor() as mycursor:
-        sql= "SELECT device_id FROM devices WHERE device_id is %s"
-        print(id)
+        sql= "SELECT device_id FROM devices WHERE device_id = %s"
+
         val=(id,)
         mycursor.execute(sql,val)
         myresult = mycursor.fetchall()
