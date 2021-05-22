@@ -1,6 +1,6 @@
 FROM node:12.7-alpine AS build
 WORKDIR ./app/web
-package.json package-lock.json ./
+COPY package.json package-lock.json ./
 RUN npm install
 RUN ng build --prod
 
