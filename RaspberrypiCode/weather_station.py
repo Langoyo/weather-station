@@ -1,6 +1,7 @@
 import adafruit_dht
 from board import *
 import datetime
+import serial
 from datetime import date
 import publisher as pub
 import time
@@ -8,9 +9,11 @@ import signal
 import json
 import uuid
 import threading
-import serial
+import pynmea2
 from time import sleep
 import sys
+from RPLCD import CharLCD
+from RPi import GPIO
 
 DHT_PIN = D4
 dht11 = adafruit_dht.DHT11(DHT_PIN, use_pulseio=False)
@@ -18,16 +21,19 @@ ser = serial.Serial("/dev/ttyS0")
 gpgga_info = "$GPGGA,"
 GPGGA_buffer = 0
 NMEA_buff = 0
-
-
+lcd = CharLCD(numbering_mode=GPIO.BOARD, cols=16, rows=1, pin_rs=22, pin_e=18, pins_data=[16, 11, 12, 15])
+BUTTON_GPIO = 40
+newtemperature = 0
+newhumidity = 0
+showHumidity = True
 def signal_handler(sig, frame):
     sys.exit(0)
 
 
 def temperatureSensor():
-    newtemperature = 0
+    global newtemperature
     while True:
-
+        
         today = date.today()
         now = datetime.datetime.today().replace(microsecond=0)
         dht11.measure()
@@ -38,13 +44,14 @@ def temperatureSensor():
                 pub.send_temperature(newtemperature, now)
             print("Temp={0:0.1f}C".format(newtemperature))
         else:
-            print("Sensor failure. Check wiring")
+            lcd.write_string(u'Tº error .')
+            time.sleep(3)
+            lcd.clear()
         # Publishing new temperature every 60 seconds
-        time.sleep(60)
-
+        
 
 def humiditySensor():
-    newhumidity = 0
+    global newhumidity
     while True:
 
         today = date.today()
@@ -57,9 +64,31 @@ def humiditySensor():
                 pub.send_humidity(newhumidity, now)
             print("Humidity={}%".format(newhumidity))
         else:
-            print("Sensor failure. Check wiring")
+            lcd.write_string(u'Hum. error .')
+            time.sleep(3)
+            lcd.clear()
             # Publishing new humidity every 60 seconds
         time.sleep(60)
+
+def showDataOnDisplay():
+    global showHumidity
+    while True:
+        lcd.clear()
+        if  showHumidity ==True:
+            lcd.write_string(u"Humidity: "+str(newhumidity))
+        else:
+            lcd.write_string(u"Temperature: "+str(newtemperature))
+     time.sleep(3)
+
+def button_handler():
+    global showHumidity
+    showHumidity = not showHumidity
+    
+
+
+
+
+
 
 
 def weatherSensor():
@@ -111,10 +140,17 @@ def convert_to_degrees(raw_value):
 if __name__ == '__main__':
 
     weatherSensor()
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(BUTTON_GPIO, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+    GPIO.add_event_detect(BUTTON_GPIO, GPIO.FALLING,
+                        callback=button_handler, bouncetime=100)
+
     signal.signal(signal.SIGINT, signal_handler)
-    location_thread = threading.Thread(target=locationSensor)
+    #location_thread = threading.Thread(target=locationSensor)
     humidity_thread = threading.Thread(target=humiditySensor)
     temperature_thread = threading.Thread(target=temperatureSensor)
-    location_thread.start()
+    display_thread= threading.Thread(targer=showDataOnDisplay)
+    #location_thread.start()
     temperature_thread.start()
     humidity_thread.start()
+    display_thread.start()
