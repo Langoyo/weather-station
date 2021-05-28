@@ -49,13 +49,21 @@
   <div>
     {{selectedDevice["device_id"]}} - {{selectedDevice["status"]}} - {{selectedDevice["location"]}}
   </div>
-  <form>
+  <form name="myForm" ng-controller="ExampleController">
     Start date:
-    <input [(ngModel)]="startDate" type="date" id="start" name="start">
+    <input [(ngModel)]="startDate" type="date" id="start" name="start" value="2000-01-08">
     End date:
-    <input [(ngModel)]="endDate" type="date" id="end" name="end">
+    <input [(ngModel)]="endDate" type="date" id="end" name="end" value="3000-01-08">
+    Temperature:
+    <select name="measurements" id="filtering" [(ngModel)]=typeMeasurements>
+      <option value="temp">Temperature</option>
+      <option value="hum">Humidity</option>
+      <option value="both" selected="selected">Both</option>
+    </select>
+    
+
   </form>
-  <button (click)='filterMeasurements()'>Filtrar</button>
+  <button (click)='filterMeasurements()'>Filter</button>
   <div>
 
   </div>

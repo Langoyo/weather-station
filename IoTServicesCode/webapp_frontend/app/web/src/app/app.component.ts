@@ -13,6 +13,7 @@ export class AppComponent {
   selectedDevice = {}
   startDate = '2000-01-01 00:00:00 '
   endDate = '3000-01-01 00:00:00 '
+  typeMeasurements = 'both'
   
 
    getDevices(){
@@ -25,33 +26,40 @@ export class AppComponent {
   getMeasurements(deviceId){
     this.startDate = '2000-01-01 00:00:00 '
     this.endDate = '3000-01-01 00:00:00 '
-    fetch('http://35.242.237.140:5001/dso/devices/query/',{
+    this.selectedDevice = deviceId
+    fetch('http://35.242.237.140:5001/dso/devices/query',{
       method:'post',
       body:JSON.stringify({
         "device_id":this.selectedDevice["device_id"],
         "start_date":this.startDate,
-        "end_date":this.endDate
+        "end_date":this.endDate,
+        "type":this.typeMeasurements
     })
 
     })
       .then(response => response.json())
       .then(data => this.measurements = data);
       
-    this.selectedDevice = deviceId
+    
     this.showDevices = false
       
 
   }
+  
+  
+
 
   filterMeasurements(){
 
-    
 
-    fetch('http://35.242.237.140:5001/dso/devices/query/',{
+
+    fetch('http://35.242.237.140:5001/dso/devices/query',{
+      method:'post',
       body:JSON.stringify({
         "device_id":this.selectedDevice["device_id"],
         "start_date":this.startDate,
-        "end_date":this.endDate
+        "end_date":this.endDate,
+        "type":this.typeMeasurements
     })
 
     })
@@ -65,31 +73,3 @@ export class AppComponent {
   }
 
 }
-
-
-
-
-
-
-// var myHeaders = new Headers();
-// myHeaders.append('Accept', 'image/jpeg');
-
-// var myInit = { method: 'GET',
-//                headers: myHeaders,
-//                mode: 'nocors',
-//                cache: 'default' };
-
-// var myRequest = new Request('flowers.jpg', myInit);
-
-// fetch(myRequest)
-// .then(function(response) {
-//   return response.blob();
-// })
-// .then(function(myBlob) {
-//   var objectURL = URL.createObjectURL(myBlob);
-//   myImage.src = objectURL;
-// });
-
-// const myImage = document.querySelector('img');
-
-// let myRequest = new Request('flowers.jpg');
