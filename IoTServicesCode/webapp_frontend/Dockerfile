@@ -2,8 +2,8 @@
 FROM node:latest as node
 COPY /app /etc/usr/src/app
 WORKDIR /etc/usr/src/app/web
-RUN npm install
-RUN npm run build --prod
+RUN npm install \
+    && npm run build --prod
 
 FROM httpd:2.4
 RUN rm /usr/local/apache2/htdocs/* -r
