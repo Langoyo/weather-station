@@ -6,8 +6,9 @@ RUN npm install
 RUN npm run build --prod
 
 FROM httpd:2.4
-COPY --from=node /etc/usr/src/app/web /etc/usr/src/app/web
-WORKDIR /etc/usr/src/app/web
 RUN rm /usr/local/apache2/htdocs/* -r
-RUN cp ./dist/web/* /usr/local/apache2/htdocs/ -r
+COPY --from=node /etc/usr/src/app/web/dist/web/* /usr/local/apache2/htdocs/
+#WORKDIR /etc/usr/src/app/web
+
+#RUN cp ./dist/web/* /usr/local/apache2/htdocs/ -r
 

@@ -14,10 +14,10 @@ export class AppComponent {
   startDate = '2000-01-01 00:00:00 '
   endDate = '3000-01-01 00:00:00 '
   typeMeasurements = 'both'
-  
+  server_address = '10.156.0.7'
 
    getDevices(){
-    fetch('http://35.242.237.140:5001/dso/devices/')
+    fetch('http://'+this.server_address+':5001/dso/devices/')
       .then(response => response.json())
       .then(data => this.devices = data);
   
@@ -27,7 +27,7 @@ export class AppComponent {
     this.startDate = '2000-01-01 00:00:00 '
     this.endDate = '3000-01-01 00:00:00 '
     this.selectedDevice = deviceId
-    fetch('http://35.242.237.140:5001/dso/devices/query',{
+    fetch('http://'+this.server_address+':5001/dso/devices/query',{
       method:'post',
       body:JSON.stringify({
         "device_id":this.selectedDevice["device_id"],
@@ -53,7 +53,7 @@ export class AppComponent {
 
 
 
-    fetch('http://35.242.237.140:5001/dso/devices/query',{
+    fetch('http://'+this.server_address+':5001/dso/devices/query',{
       method:'post',
       body:JSON.stringify({
         "device_id":this.selectedDevice["device_id"],
