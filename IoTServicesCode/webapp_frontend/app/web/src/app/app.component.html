@@ -1,10 +1,7 @@
 <div *ngIf="showDevices;else other_content">
   <div class="container">
     <table class="table1">
-
-
-
-      <tr>
+        <tr>
         <th>Device</th>
         <th>State</th>
         <th>Location</th>
@@ -54,11 +51,11 @@
     <input [(ngModel)]="startDate" type="date" id="start" name="start" value="2000-01-08">
     End date:
     <input [(ngModel)]="endDate" type="date" id="end" name="end" value="3000-01-08">
-    Data type:
+    Data to display:
     <select name="measurements" id="filtering" [(ngModel)]=typeMeasurements>
       <option value="temp">Temperature</option>
       <option value="hum">Humidity</option>
-      <option value="both" selected="selected">Both</option>
+      <option value="both" selected="selected">Temperature and Humidity</option>
     </select>
     
 
