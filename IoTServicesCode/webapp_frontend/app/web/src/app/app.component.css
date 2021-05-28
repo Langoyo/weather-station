@@ -4,7 +4,7 @@ html{
 .table1{
     margin-left: auto;
     margin-right: auto;
-    
+    margin: 0 auto;  
 }
 .table,th,td{
     border: 1px solid black;
