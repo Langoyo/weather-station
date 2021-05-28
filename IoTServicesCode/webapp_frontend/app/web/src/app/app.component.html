@@ -1,74 +1,74 @@
 <div *ngIf="showDevices;else other_content">
   <div class="l-12">
     <table class="table1">
-  
-      
-  
+
+
+
       <tr>
         <th>Device</th>
         <th>State</th>
         <th>Location</th>
         <th>Date</th>
-  
+
       </tr>
       <tr *ngFor="let device of devices">
-  
+
         <td>
           {{device["device_id"]}}
         </td>
-  
+
         <td>
           {{device["status"]}}
         </td>
-  
+
         <td>
           {{device["location"]}}
         </td>
-  
+
         <td>
           {{device["timestamp"]}}
         </td>
-  
+
         <td class="medidas">
-          <button  (click)='getMeasurements(device)'>Measurements</button>
+          <button (click)='getMeasurements(device)'>Measurements</button>
         </td>
       </tr>
       <tr class="medidas">
-        <td  class="medidas" colspan=4><button (click)='getDevices()' class="fetch">Fetch</button></td>
-  
+        <td class="medidas" colspan=4><button (click)='getDevices()' class="fetch">Fetch</button></td>
+
       </tr>
     </table>
-    
-  </div>  
+
+  </div>
 </div>
 
 <ng-template #other_content>
 
   <button (click)='getBack()'>Back</button>
-  
+
   <div>
     {{selectedDevice["device_id"]}} - {{selectedDevice["status"]}} - {{selectedDevice["location"]}}
   </div>
-    <form >
-      Start date:
-      <input [(ngModel)]="startDate" type="date" id="start" name="start" > 
-      End date:
-      <input [(ngModel)]="endDate" type="date" id="end" name="end" >
-    </form> 
-    <button (click)='filterMeasurements()'>Filtrar</button>
+  <form>
+    Start date:
+    <input [(ngModel)]="startDate" type="date" id="start" name="start">
+    End date:
+    <input [(ngModel)]="endDate" type="date" id="end" name="end">
+  </form>
+  <button (click)='filterMeasurements()'>Filtrar</button>
   <div>
 
   </div>
-  
+
   <table class="table1">
-  
-    
+
+
 
     <tr>
       <th>Date</th>
       <th>Temperature</th>
       <th>Humidity</th>
-      
+
 
     </tr>
     <tr *ngFor="let measurement of measurements">
@@ -85,9 +85,9 @@
         {{measurement["humidity"]}}
       </td>
 
-      
 
-      
+
+
     </tr>
   </table>
 

@@ -38,7 +38,7 @@ def measurements_query(params):
     with mydb.cursor() as mycursor:
         sql = "SELECT temperature, humidity, device_id, timestamp FROM sensor_data WHERE device_id = %s AND timestamp BETWEEN %s AND %s ORDER BY id DESC;"
         val = (params["device_id"],params["start_date"],params["end_date"])
-        mycursor.execute()
+        mycursor.execute(sql,val)
         myresult = mycursor.fetchall()
         for temperature, humidity, device, timestamp in myresult:
             r.append({'temperature': temperature, 'humidity': humidity, 'device': device, "timestamp": str(timestamp)})
