@@ -2,22 +2,20 @@ FROM node:latest as node
 
 
 
+
+COPY /app /etc/usr/src/app
+WORKDIR /etc/usr/src/app/web
+RUN npm install
+#RUN cp ./* /usr/local/apache2/htdocs/ -r
+#WORKDIR /etc/usr/src/app/web
+RUN npm run build --prod
+
+#RUN cp ./* /usr/local/apache2/htdocs/ -r
 FROM httpd:2.4
 COPY /app /etc/usr/src/app
-WORKDIR /etc/usr/src/app
-RUN apt-get update && apt-get install -y curl
-RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
-RUN apt-get update && apt-get install -y nodejs
-RUN npm install
-RUN rm /usr/local/apache2/htdocs/*
-#RUN cp ./* /usr/local/apache2/htdocs/ -r
 WORKDIR /etc/usr/src/app/web
-
-RUN npm run build --prod
 RUN cp ./dist/web/* /usr/local/apache2/htdocs/ -r
-#RUN cp ./* /usr/local/apache2/htdocs/ -r
-
-
+RUN rm /usr/local/apache2/htdocs/*
 #COPY /app /etc/usr/src/app
 #WORKDIR /etc/usr/src/app/web
 
