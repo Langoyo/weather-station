@@ -1,7 +1,7 @@
 {
     "name":"perri",
     "password":"sabor4",
-    "ip":"34.89.155.3",
+    "ip":"35.242.237.140",
     "port":"1883",
     "keep_alive":"60",
     "topic_1":"temperature",
