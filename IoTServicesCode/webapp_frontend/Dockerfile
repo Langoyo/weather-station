@@ -14,8 +14,9 @@ RUN npm run build --prod
 FROM httpd:2.4
 COPY /app /etc/usr/src/app
 WORKDIR /etc/usr/src/app/web
+RUN rm /usr/local/apache2/htdocs/* -r
 RUN cp ./dist/web/* /usr/local/apache2/htdocs/ -r
-RUN rm /usr/local/apache2/htdocs/*
+
 #COPY /app /etc/usr/src/app
 #WORKDIR /etc/usr/src/app/web
 
