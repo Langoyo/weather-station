@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, request
 from flask_cors import CORS
 import requests
 import os
@@ -24,7 +24,7 @@ def get_device_list():
 
 @app.route('/dso/devices/query')
 def get_device_query():
-    data = requests.get_json()
+    data = request.get_json()
     response = requests.get('http://' + MEASUREMENTS_MICROSERVICE_ADDRESS + ':' + MEASUREMENTS_MICROSERVICE_PORT + '/measurements/query/',data=data)
     return response.content
 
