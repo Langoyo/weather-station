@@ -4,16 +4,7 @@ import os
 from measurements_manager import *
 app = Flask(__name__)
 CORS(app)
-"""
-@app.route('/save_measures', method = ['POST'])
-def save_measures():
-    measurements_register()
-"""
-"""
-@app.route('/submit_device_info_to_Store', method=['POST'])
-def save_deviceinfo():
-    devices_register()
-"""
+
 
 @app.route('/measurements/register/', methods = ['POST'])
 def set_measurement():
@@ -27,7 +18,7 @@ def get_measurements():
     return measurments_retriever()
 
 @app.route('/measurements/query/')
-def get_measurements():
+def query_measurements():
     params = request.get_json()
     return measurements_query(params)
 
