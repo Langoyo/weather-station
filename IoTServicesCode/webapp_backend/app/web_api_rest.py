@@ -24,7 +24,7 @@ def get_device_list():
 
 @app.route('/dso/devices/query')
 def get_device_query():
-    data = request.get_json(force=True)
+    data = request.get_json(force=True,silent=False, cache=True)
     response = requests.get('http://' + MEASUREMENTS_MICROSERVICE_ADDRESS + ':' + MEASUREMENTS_MICROSERVICE_PORT + '/measurements/query/',params=data)
     return response.content
 
