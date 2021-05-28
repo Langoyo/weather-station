@@ -14,7 +14,7 @@ export class AppComponent {
   startDate = '2000-01-01 00:00:00 '
   endDate = '3000-01-01 00:00:00 '
   typeMeasurements = 'both'
-  server_address = '0.0.0.0'
+  server_address = '35.242.237.140'
 
    getDevices(){
     fetch('http://'+this.server_address+':5001/dso/devices/')
