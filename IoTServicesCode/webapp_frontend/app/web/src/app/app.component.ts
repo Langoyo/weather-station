@@ -26,6 +26,7 @@ export class AppComponent {
     this.startDate = '2000-01-01 00:00:00 '
     this.endDate = '3000-01-01 00:00:00 '
     fetch('http://35.242.237.140:5001/dso/devices/query/',{
+      method:'post',
       body:JSON.stringify({
         "device_id":this.selectedDevice["device_id"],
         "start_date":this.startDate,
@@ -43,8 +44,10 @@ export class AppComponent {
   }
 
   filterMeasurements(){
+
+    
+
     fetch('http://35.242.237.140:5001/dso/devices/query/',{
-      method:'post',
       body:JSON.stringify({
         "device_id":this.selectedDevice["device_id"],
         "start_date":this.startDate,
