@@ -1,10 +1,11 @@
 FROM node:latest as node
-RUN npm install
+
 
 
 FROM httpd:2.4
 COPY /app /etc/usr/src/app
 WORKDIR /etc/usr/src/app
+RUN npm install
 RUN rm /usr/local/apache2/htdocs/*
 #RUN cp ./* /usr/local/apache2/htdocs/ -r
 WORKDIR /etc/usr/src/app/web
