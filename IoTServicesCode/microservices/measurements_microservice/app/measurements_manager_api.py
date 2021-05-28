@@ -26,6 +26,11 @@ def set_measurement():
 def get_measurements():
     return measurments_retriever()
 
+@app.route('/measurements/query/')
+def get_measurements():
+    params = request.get_json()
+    return measurements_query(params)
+
 HOST = os.getenv('HOST')
 PORT = os.getenv('PORT')
 app.run(host = HOST, port = PORT)
