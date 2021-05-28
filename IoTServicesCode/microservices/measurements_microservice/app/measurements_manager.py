@@ -42,7 +42,7 @@ def measurements_query(params):
             mycursor.execute(sql,val)
             myresult = mycursor.fetchall()
             for temperature, device, timestamp in myresult:
-                r.append({'temperature': temperature, 'device': device, "timestamp": str(timestamp)})
+                r.append({'temperature': temperature, 'humidity': '', 'device': device, "timestamp": str(timestamp)})
             r = json.dumps(r)
 
         elif params["type"] == "hum":
@@ -50,7 +50,7 @@ def measurements_query(params):
             mycursor.execute(sql,val)
             myresult = mycursor.fetchall()
             for  humidity, device, timestamp in myresult:
-                r.append({ 'humidity': humidity, 'device': device, "timestamp": str(timestamp)})
+                r.append({'temperature': '', 'humidity': humidity, 'device': device, "timestamp": str(timestamp)})
             r = json.dumps(r)
         elif params["type"]== "both":
             sql = "SELECT temperature, humidity, device_id, timestamp FROM sensor_data WHERE device_id = %s AND timestamp BETWEEN %s AND %s ORDER BY id DESC;"
