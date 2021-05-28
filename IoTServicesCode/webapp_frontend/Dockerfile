@@ -5,6 +5,9 @@ FROM node:latest as node
 FROM httpd:2.4
 COPY /app /etc/usr/src/app
 WORKDIR /etc/usr/src/app
+RUN apt-get update && apt-get install -y curl
+RUN curl -sL https://deb.nodesource.com/setup_8.x | bash -
+RUN apt-get update && apt-get install -y nodejs
 RUN npm install
 RUN rm /usr/local/apache2/htdocs/*
 #RUN cp ./* /usr/local/apache2/htdocs/ -r
