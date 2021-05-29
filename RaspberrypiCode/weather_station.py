@@ -112,11 +112,25 @@ def weatherSensor():
     pub.send_id("Device:" + id, now)
 
 
+
+def parseGPS(read):
+    cadena = str(read)
+    if cadena.find('GGA') > 0:
+        print(cadena)
+        msg = pynmea2.parse(cadena[2:len(cadena)-5])
+        #msg = pynmea2.parse("$GPGGA,184353.07,1929.045,S,02410.506,E,1,04,2.6,100.00,M,-33.9,M,,0000*6D")
+        print (msg.longitude, msg.latitude)
+
+
 def locationSensor():
+    serialPort = serial.Serial("/dev/ttyAMA0", 9600, timeout=0.5)
     while True:
+        read = serialPort.readline()
+        parseGPS(read)
         now = datetime.datetime.today().replace(microsecond=0)
         location = "Should be location"
         pub.send_location(location, now)
+
         time.sleep(3600)
 #     while True:
 #         received_data = (str)(ser.readline())  # read NMEA string received
