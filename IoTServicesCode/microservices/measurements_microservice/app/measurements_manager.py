@@ -33,10 +33,15 @@ def measurements_register(params):
         print(mycursor.rowcount,"record inserted.")
 
 def measurements_query(params):
+    """
+    Parameterized query based on range of timestamps, device id and type of measurement
+    """
     mydb = connect_database()
     r = []
     with mydb.cursor() as mycursor:
         val = (params["device_id"],params["start_date"],params["end_date"])
+
+        # We make a different query depending on the type of measurement
         if params["type"] == "temp":
             sql= "SELECT temperature, device_id, timestamp FROM sensor_data WHERE device_id = %s AND timestamp BETWEEN %s AND %s ORDER BY id DESC;"
             mycursor.execute(sql,val)
@@ -52,6 +57,7 @@ def measurements_query(params):
             for  humidity, device, timestamp in myresult:
                 r.append({'temperature': '', 'humidity': humidity, 'device': device, "timestamp": str(timestamp)})
             r = json.dumps(r)
+
         elif params["type"]== "both":
             sql = "SELECT temperature, humidity, device_id, timestamp FROM sensor_data WHERE device_id = %s AND timestamp BETWEEN %s AND %s ORDER BY id DESC;"
             mycursor.execute(sql,val)

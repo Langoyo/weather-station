@@ -15,12 +15,14 @@ def save_deviceinfo():
 def retrieve_devices():
     return devices_retriever()
 
+# New method to deactivate a device
 @app.route('/devices/error/', methods = ['POST'])
 def remove_device():
     params = request.get_json()
     devices_deactivator(params)
     return {'result': 'record removed'}, 201
 
+# new method to save location of a device
 @app.route('/devices/location/', methods = ['POST'])
 def locate_device():
     params = request.get_json()

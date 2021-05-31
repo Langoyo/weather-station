@@ -28,6 +28,9 @@ def devices_retriever():
     return r
     
 def devices_deactivator(params):
+    """
+    Updates a device as inactive
+    """
     mydb=connect_database()
     with mydb.cursor() as mycursor:
         sql= "UPDATE devices SET status=%s, timestamp=%s WHERE device_id=%s"
@@ -40,6 +43,9 @@ def devices_deactivator(params):
             print("Error deactivating device")
 
 def devices_locator(params):
+    """
+    Updates the location of a device
+    """
     mydb=connect_database()
     with mydb.cursor() as mycursor:
         sql= "UPDATE devices SET location=%s ,timestamp=%s WHERE device_id=%s"
@@ -54,6 +60,9 @@ def devices_locator(params):
 
 
 def devices_register(params):
+    """
+    Register a device if new or activates it if it already exists
+    """
     mydb=connect_database()
     with mydb.cursor() as mycursor:
 
@@ -78,6 +87,9 @@ def devices_register(params):
                 print("Error registering the device")
 
 def check_existing_device(id):
+    """
+    Checks if a device exists in the database
+    """
     mydb=connect_database()
     print(id)
     with mydb.cursor() as mycursor:

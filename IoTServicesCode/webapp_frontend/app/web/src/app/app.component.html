@@ -1,4 +1,4 @@
-
+<!-- Devices web page-->
 <div *ngIf="showDevices;else other_content">
   <div class="container">
     <table class="table1">
@@ -40,6 +40,8 @@
   </div>
 </div>
 
+
+<!-- Measurements web page-->
 <ng-template #other_content>
 
   <button (click)='getBack()'>Back</button>
@@ -47,6 +49,7 @@
   <div>
     {{selectedDevice["device_id"]}} - {{selectedDevice["status"]}} - {{selectedDevice["location"]}}
   </div>
+  <!-- Measurements filters-->
   <form name="myForm" ng-controller="ExampleController">
     Start date:
     <input [(ngModel)]="startDate" type="date" id="start" name="start" value="2000-01-08">

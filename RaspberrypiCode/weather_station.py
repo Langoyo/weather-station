@@ -40,6 +40,9 @@ def signal_handler(sig, frame):
 
 
 def temperatureSensor():
+    """
+        Measures temperature from the sensor and updates message to be printed and publishes data
+    """
     newtemperature = 0
     global temperature_message
     while True:
@@ -58,11 +61,15 @@ def temperatureSensor():
             lcd.clear()
             temperature_message = 'TempError'
 
-        time.sleep(6)
         # Publishing new temperature every 60 seconds
+        time.sleep(6)
+
 
 
 def humiditySensor():
+    """
+        Measures temperature from the sensor and updates message to be printed and publishes data
+    """
     newhumidity = 0
     global humidity_message
     while True:
@@ -86,6 +93,9 @@ def humiditySensor():
 
 
 def showDataOnDisplay():
+    """
+        Displays data on the LCD screen
+    """
     global showHumidity
     global humidity_message
     global temperature_message
@@ -118,54 +128,22 @@ def parseGPS(read):
     if cadena.find('GGA') > 0:
         print(cadena)
         msg = pynmea2.parse(cadena[2:len(cadena)-5])
-        #msg = pynmea2.parse("$GPGGA,184353.07,1929.045,S,02410.506,E,1,04,2.6,100.00,M,-33.9,M,,0000*6D")
         print (msg.longitude, msg.latitude)
+        return "lat: "+msg.latitude + "; lon: " + msg.longitude
 
 
 def locationSensor():
+    """
+    Location thread function
+    """
     serialPort = serial.Serial("/dev/ttyAMA0", 9600, timeout=0.5)
+    location = "Noy located yet"
     while True:
         read = serialPort.readline()
-        parseGPS(read)
         now = datetime.datetime.today().replace(microsecond=0)
-        location = "Should be location"
+        location = parseGPS(read)
         pub.send_location(location, now)
-
         time.sleep(3600)
-#     while True:
-#         received_data = (str)(ser.readline())  # read NMEA string received
-#         GPGGA_data_available = received_data.find(
-#             gpgga_info)  # check for NMEA GPGGA string
-#         if (GPGGA_data_available > 0):
-#             # store data coming after “$GPGGA,” string
-#             GPGGA_buffer = received_data.split("$GPGGA,", 1)[1]
-#             NMEA_buff = (GPGGA_buffer.split(','))
-#             nmea_time = []
-#             nmea_latitude = []
-#             nmea_longitude = []
-#             nmea_time = NMEA_buff[0]  # extract time from GPGGA string
-#             nmea_latitude = NMEA_buff[1]  # extract latitude from GPGGA string
-#             # extract longitude from GPGGA string
-#             nmea_longitude = NMEA_buff[3]
-#             print("NMEA Time: ", nmea_time, '\n')
-#             lat = (float)(nmea_latitude)
-#             lat = convert_to_degrees(lat)
-#             longi = (float)(nmea_longitude)
-#             longi = convert_to_degrees(longi)
-#             now = datetime.datetime.today().replace(microsecond=0)
-#             location = "NMEA Latitude:"+ lat+ "NMEA Longitude:"+ longi
-#             print(location," at ", now)
-#             pub.send_location(location, now)
-#             time.sleep(5)
-
-
-def convert_to_degrees(raw_value):
-    decimal_value = raw_value / 100.00
-    degrees = int(decimal_value)
-    mm_mmmm = (decimal_value - int(decimal_value)) / 0.6
-    position = degrees + mm_mmmm
-    position = "%.4f" % (position)
-    return position
 
 
 if __name__ == '__main__':

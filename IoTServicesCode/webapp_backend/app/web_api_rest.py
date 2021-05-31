@@ -22,6 +22,8 @@ def get_device_list():
     response = requests.get('http://' + DEVICES_MICROSERVICE_ADDRESS + ':' + DEVICES_MICROSERVICE_PORT + '/devices/retrieve/')
     return response.content
 
+
+# New method to make parameterized queries
 @app.route('/dso/devices/query',methods=['POST'])
 def get_device_query():
     data = request.get_json(force=True,silent=False, cache=True)

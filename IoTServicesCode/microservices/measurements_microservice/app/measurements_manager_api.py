@@ -17,6 +17,7 @@ def set_measurement():
 def get_measurements():
     return measurments_retriever()
 
+# new method to get a parameterized query
 @app.route('/measurements/query/')
 def query_measurements():
     params = request.get_json()

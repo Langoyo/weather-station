@@ -3,6 +3,8 @@ import json
 from measurement_register_interface import *
 from device_register_interface import *
 import os
+import datetime
+
 
 my_json=[]
 current_temperature= "0"
@@ -36,33 +38,40 @@ def on_message(client, userdata, msg):
     print(msg)
     global current_temperature, current_humidity, my_json, new_temperature, new_humidity, current_id, new_id, new_location, current_location
     print(msg.payload.decode('utf-8', 'ignore'))
+    date = datetime.datetime.today().replace(microsecond=0)
     if msg.topic==TOPIC_1 :
         new_temperature=str(msg.payload.decode('utf-8', 'ignore'))
         print(new_temperature)
         new_temperature = json.loads(new_temperature)
+        # If the incoming json contains a status key, it means it is a last will message, indicating that the device is now inactive
+        # Sending new temperature
         if 'status' not in new_temperature:
             current_temperature = new_temperature['value']
             print(msg.topic," is ",current_temperature)
             data = {'temperature': current_temperature, 'humidity': current_humidity,'device':current_id, 'timestamp': new_temperature['timestamp']}
             submit_data_to_store(data)
+        # Last will, deactivating device
         else:
-            off_data={"status":"Inactive","device":current_id,"timestamp": new_temperature['timestamp']}
+            off_data={"status":"Inactive","device":current_id,"timestamp": str(date)}
             submit_error_info(off_data)
 
     if msg.topic==TOPIC_2:
         new_humidity = str(msg.payload.decode('utf-8', 'ignore'))
         print(new_humidity)
         new_humidity = json.loads(new_humidity)
+        # Sending new humidity
         if 'status' not in new_humidity:
             current_humidity = new_humidity['value']
             print(msg.topic," is ",current_humidity)
             data = {'temperature': current_temperature, 'humidity': current_humidity, 'device':current_id, 'timestamp': new_humidity['timestamp']}
             submit_data_to_store(data)
+        # Last will, deactivating device
         else:
-            off_data={'status':"Inactive",'device':current_id,'timestamp':new_humidity['timestamp']}
+            off_data={'status':"Inactive",'device':current_id,'timestamp':str(date)}
             submit_error_info(off_data)
 
     if msg.topic==TOPIC_3:
+        # Sending new device
         new_id = str(msg.payload.decode('utf-8', 'ignore'))
         print(new_id)
         new_id = json.loads(new_id)
@@ -73,9 +82,10 @@ def on_message(client, userdata, msg):
             data = { 'device' : current_id , 'status' : "Active" , 'timestamp' : new_id['timestamp']}
             print(data)
             submit_device_info_to_store(data)
+        # Last will, deactivating device
         else:
 
-            data={'status':"Inactive",'device':current_id,'timestamp':new_id['timestamp']}
+            data={'status':"Inactive",'device':current_id,'timestamp':str(date)}
             submit_error_info(data)
 
 
@@ -83,15 +93,17 @@ def on_message(client, userdata, msg):
         new_location = str(msg.payload.decode('utf-8', 'ignore'))
         print(new_location)
         new_location = json.loads(new_location)
+        # Sending new location
         if 'status' not in new_location:
             
            current_location = new_location['value']
            print(msg.topic, " is ",current_location)
            data = {'device':current_id,'location':current_location,'timestamp':new_location['timestamp']}
            submit_location(data)
+        # Last will, deactivating device
         else:
 
-            data={'status':"Inactive",'device':current_id,'timestamp':new_location['timestamp']}
+            data={'status':"Inactive",'device':current_id,'timestamp':str(date)}
             submit_error_info(data)
             
 
