@@ -21,10 +21,7 @@ dht11 = adafruit_dht.DHT11(DHT_PIN, use_pulseio=False)
 humidity_message = "Humidity: 0%"
 temperature_message = "Temperature: 0º"
 showHumidity = True
-# ser = serial.Serial("/dev/ttyS0")
-# gpgga_info = "$GPGGA,"
-# GPGGA_buffer = 0
-# NMEA_buff = 0
+
 lcd = CharLCD(numbering_mode=GPIO.BCM, cols=16, rows=2, pin_rs=25, pin_e=24, pins_data=[23, 17, 18, 22],
               charmap='A02',
               compat_mode=True)
@@ -62,7 +59,7 @@ def temperatureSensor():
             temperature_message = 'TempError'
 
         # Publishing new temperature every 60 seconds
-        time.sleep(6)
+        time.sleep(60)
 
 
 
@@ -89,7 +86,7 @@ def humiditySensor():
             humidity_message = 'HumError'
 
             # Publishing new humidity every 60 seconds
-        time.sleep(6)
+        time.sleep(60)
 
 
 def showDataOnDisplay():
@@ -129,7 +126,8 @@ def parseGPS(read):
         print(cadena)
         msg = pynmea2.parse(cadena[2:len(cadena)-5])
         print (msg.longitude, msg.latitude)
-        return "lat: "+msg.latitude + "; lon: " + msg.longitude
+        location = "lat: "+str(msg.latitude) + "; lon: " + str(msg.longitude)
+        return location
 
 
 def locationSensor():
@@ -141,7 +139,10 @@ def locationSensor():
     while True:
         read = serialPort.readline()
         now = datetime.datetime.today().replace(microsecond=0)
-        location = parseGPS(read)
+        new_location = parseGPS(read)
+        if new_location is not None:
+            location = new_location
+        print(location)
         pub.send_location(location, now)
         time.sleep(3600)
 
